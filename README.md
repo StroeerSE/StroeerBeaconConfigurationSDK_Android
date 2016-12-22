@@ -1,0 +1,1 @@
+# StroeerBeaconConfigurationSDK_Android
