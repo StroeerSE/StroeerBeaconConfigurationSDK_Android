@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">ConfigurationTestApp</string>
+
+    <string name="warning_permission_missing_location">Location permission is required.</string>
+    <string name="warning_bluetooth_disabled">Active Bluetooth is required.</string>
+
+    <string name="diag_title_location_settings">Location Settings required</string>
+    <string name="diag_message_location_settings_open">Please enable location services. You will be
+        guided to the system settings.
+    </string>
+
+    <string name="diag_message_location_settings_unavailable">Your device doesn\'t seem to have a
+        system settings for location
+        services. Please find and enable them in settings, otherwise this app might not work as
+        intended.
+    </string>
+</resources>
