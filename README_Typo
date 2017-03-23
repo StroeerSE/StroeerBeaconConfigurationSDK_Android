@@ -5,7 +5,7 @@ With the ConfigurationSDK you are scanning for special beacons of the Favendo Gm
 
 The SDK allows full offline functionality. You need to set up the SDK once correctly within your application. Once done, it can be set up without an internet connection next time.
 
-The SDK receives the current charge-sate of each beacon and sends this information to the backend (server). You are now able to see this information in the corresponding dashboard.
+The SDK receives the current charge-state of each beacon and sends this information to the backend (server). You are now able to see this information in the corresponding dashboard.
 
 ## Integrate the SDK into a project
 In the GitHub you will find a demo application. That application shows how to set up the configuration-sdk-project.
@@ -42,32 +42,32 @@ To use the whole functionality of the SDK, it is necessary to declare some permi
 
 #### Predefined permissions by sdk
 To start and stop scanning for bluetooth low energy devices:
-```bash
+```xml
 <uses-permission android:name="android.permission.BLUETOOTH" />
 ```
 To check if bluetooth is available and running:
-```bash
+```xml
 <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
 ```
 To upload analytics data to the backend:
-```bash
+```xml
 <uses-permission android:name="android.permission.INTERNET" />
 ```
 The SDK features automatic data-upload after the internet connection got lost and than reconnects. To recognize those changes the following permissions are needed:
-```bash
+```xml
 <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"/>
 ```
 Since Android 6.0 it is necessary to have Location Permission in order to scan for beacons:
-```bash
+```xml
 <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
 ```
 ### Main Classes
-As you can see in the demo-project which is delivered, the most important class is ConfigurationApi.
+As you can see in the demo-project which is delivered, the most important class is `ConfigurationApi`.
 
-ConfigurationApi gives access to all functionality of the ConfigurationSDK.
-After you have got an instance of ConfigurationApi you have to set the ApiKey, which confirms you to be a valid user of the sdk. The next step is to register a listener to get some information about the current state of the configurationSdk. Don't forget to unregister this listener after you have closed the activity.
+`ConfigurationApi` gives access to all functionality of the ConfigurationSDK.
+After you have got an instance of `ConfigurationApi` you have to set the ApiKey, which confirms you to be a valid user of the sdk. The next step is to register a listener to get some information about the current state of the configurationSdk. Don't forget to unregister this listener after you have closed the activity.
 
-```bash
+```java
 public class MyActivity extends Activity implements ConfigurationApi.Listener {
 
     public static final String API_KEY = "type apikey here";
@@ -111,11 +111,11 @@ public class MyActivity extends Activity implements ConfigurationApi.Listener {
 ### Scan process
 #### Start Scanning
 
-The background-service will start scanning right after you have created an instance (StroeerProxityApi.getInstance(this)). The background server maintains itself and will reutrn to the desired state after it get closed by the system.
+The background-service will start scanning right after you have created an instance `(StroeerProxityApi.getInstance(this))`. The background server maintains itself and will return to the desired state after it get closed by the system.
 
 #### Stop Scanning
 
-The Scanning will stop if some of the follwoing points happen:
+The scanning will stop if some of the following points happen:
 
  - Bluetooth is turned off
  - LocationServices are turend off
