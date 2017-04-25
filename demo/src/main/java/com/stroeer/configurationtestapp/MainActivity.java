@@ -8,17 +8,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import de.stroeer.configurationsdk.ConfigurationApi;
 import de.stroeer.configurationsdk.model.BeaconWithBattery;
 
 public class MainActivity extends AppCompatActivity implements ConfigurationApi.Listener {
 
-    private static final String API_KEY = "Type Api-key here";
+    private static final String API_KEY = "Type Api-Key here";
 
     private RequirementsChecker requirementsChecker;
 
     private TextView tvLog;
     private Handler mainThreadHandler;
+
+    private Map<String, BeaconWithBattery> beacons = new HashMap<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,7 +31,12 @@ public class MainActivity extends AppCompatActivity implements ConfigurationApi.
         setContentView(R.layout.activity_main);
         this.tvLog = (TextView) findViewById(R.id.tvLog);
 
-        this.requirementsChecker = new RequirementsChecker(this);
+        this.requirementsChecker = new RequirementsChecker(this) {
+            @Override
+            public void onAllRequirementsSuccessful() {
+                ConfigurationApi.getInstance(MainActivity.this).startScan();
+            }
+        };
         this.mainThreadHandler = new Handler();
 
         ConfigurationApi.getInstance(this).registerConfigurationListener(this);
@@ -35,24 +45,27 @@ public class MainActivity extends AppCompatActivity implements ConfigurationApi.
 
     @Override
     public void onBeaconDataChanged(final BeaconWithBattery beaconWithBattery) {
+        beacons.put(beaconWithBattery.getMajor() + ":" + beaconWithBattery.getMinor(), beaconWithBattery);
         this.mainThreadHandler.post(new Runnable() {
             @Override
             public void run() {
-                tvLog.setText(tvLog.getText() + generateBeaconText(beaconWithBattery));
+                tvLog.setText(generateBeaconText());
             }
         });
     }
 
-    private String generateBeaconText(final BeaconWithBattery beaconWithBattery) {
+    private String generateBeaconText() {
         StringBuffer sb = new StringBuffer();
-        sb.append(beaconWithBattery.getMajor());
-        sb.append(":");
-        sb.append(beaconWithBattery.getMinor());
-        sb.append(" = ");
-        sb.append(beaconWithBattery.getChargeState());
-        sb.append(" sent to server: ");
-        sb.append(beaconWithBattery.sentToServer());
-        sb.append("\n");
+        for (BeaconWithBattery beacon : beacons.values()) {
+            sb.append(beacon.getMajor());
+            sb.append(":");
+            sb.append(beacon.getMinor());
+            sb.append(" = ");
+            sb.append(beacon.getChargeState());
+            sb.append(" sent to server: ");
+            sb.append(beacon.sentToServer());
+            sb.append("\n");
+        }
         return sb.toString();
     }
 

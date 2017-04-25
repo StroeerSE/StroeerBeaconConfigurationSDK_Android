@@ -15,14 +15,13 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Toast;
 
-
 import static android.Manifest.permission.ACCESS_COARSE_LOCATION;
 import static android.support.v4.content.PermissionChecker.PERMISSION_GRANTED;
 
 /**
  * Created by dustin on 13.12.16.
  */
-public class RequirementsChecker {
+public abstract class RequirementsChecker {
 
     private static final int REQUEST_LOCATION_PERMISSION_START_CONFIG = 1;
     private static final int REQUEST_ENABLE_BT_START_CONFIG = 2;
@@ -56,6 +55,8 @@ public class RequirementsChecker {
                             granted = isLocationServicesOn(activity);
                             if (!granted) {
                                 new LocationSettingsDialog().show(activity.getSupportFragmentManager(), LocationSettingsDialog.class.getSimpleName());
+                            } else {
+                                onAllRequirementsSuccessful();
                             }
                         }
                     }
@@ -63,6 +64,8 @@ public class RequirementsChecker {
             }
         });
     }
+
+    public abstract void onAllRequirementsSuccessful();
 
     private static boolean isLocationServicesOn(Context context) {
         try {
@@ -75,10 +78,12 @@ public class RequirementsChecker {
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
             case REQUEST_LOCATION_PERMISSION_START_CONFIG:
-                if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    checkRequirements();
-                } else {
-                    Toast.makeText(this.activity, R.string.warning_permission_missing_location, Toast.LENGTH_LONG).show();
+                if (grantResults.length > 0) {
+                    if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                        checkRequirements();
+                    } else {
+                        Toast.makeText(this.activity, R.string.warning_permission_missing_location, Toast.LENGTH_LONG).show();
+                    }
                 }
                 break;
         }

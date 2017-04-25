@@ -30,9 +30,14 @@ allprojects {
 Then add the following lines to the "build.gradle"-file of the app-module. Be aware that you might have to update the version numbers according to the aars you found in the demo-application.
 ```bash
 dependencies {
-    compile('de.stroeer:stroeerConfigurationSdk:x.y.z@aar')
+    compile('de.stroeer:stroeerConfigurationSdk:x.y.z@aar'){
+	exclude group: "com.android.support", module: "support-v4"
+        transitive = true
+    }
 }
 ```
+
+Current Version is: 0.2.18
 
 ## Usage
 ### Prerequisites
@@ -109,6 +114,9 @@ public class MyActivity extends Activity implements ConfigurationApi.Listener {
 ```
 
 ### Scan process
+
+Since version 0.2.18 CryptoV2-algorithm is also supported. To decrypt these cryptoV2-Beacons it is necessary to have an internet-connection, so the DecryptionKeys can be loaded. The DecryptionKeys are loaded up to 14 days in the future. In this period (14days) the sdk can be used offline.
+
 #### Start Scanning
 
 The background-service will start scanning right after you have created an instance (StroeerProxityApi.getInstance(this)). The background server maintains itself and will reutrn to the desired state after it get closed by the system.
