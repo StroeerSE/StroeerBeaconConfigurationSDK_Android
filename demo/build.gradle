@@ -26,6 +26,11 @@ buildscript {
     dependencies {
         classpath 'com.android.tools.build:gradle:2.3.1'
     }
+    repositories {
+        mavenLocal()
+        mavenCentral()
+        jcenter()
+    }
 }
 
 dependencies {
@@ -34,7 +39,7 @@ dependencies {
     })
     compile 'com.android.support:appcompat-v7:25.0.1'
 
-    compile('de.stroeer:stroeerConfigurationSdk:0.2.18@aar') {
+    compile('de.stroeer:stroeerConfigurationSdk:0.3.0@aar') {
         exclude group: "com.android.support", module: "support-v4"
         transitive = true
     }
@@ -42,6 +47,7 @@ dependencies {
 
 
 repositories {
+    jcenter()
     mavenLocal()
     mavenCentral()
     maven {
